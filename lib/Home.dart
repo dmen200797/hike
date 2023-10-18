@@ -24,9 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 height: 70,
                 width: double.infinity,
-                child: Center(
+                child: const Center(
                   child: Row(
-                    children: const [
+                    children: [
                       Icon(Icons.add_road),
                       SizedBox(width: 10),
                       Text('Quãng đường đi'),
@@ -57,9 +57,9 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
           height: 500,
-          child: SingleChildScrollView(
+          child: const SingleChildScrollView(
             child: Column(
-              children: const [
+              children: [
                 BoxItem(),
                 BoxItem(),
                 BoxItem(),
@@ -89,13 +89,13 @@ class BoxItem extends StatelessWidget {
       ),
       height: 100,
       width: double.infinity,
-      child: Row(
+      child: const Row(
         children: [
-          const Icon(Icons.directions_walk_outlined, size: 45),
+          Icon(Icons.directions_walk_outlined, size: 45),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: Column(
-              children: const [
+              children: [
                 Text('10-10'),
                 Spacer(),
                 Text('Công viên Hòa Bình'),
@@ -104,8 +104,10 @@ class BoxItem extends StatelessWidget {
               ],
             ),
           ),
-          const Spacer(),
-          const Icon(Icons.navigate_next),
+          SizedBox(width: 20),
+          Text('10,00 km'),
+          Spacer(),
+          Icon(Icons.navigate_next),
         ],
       ),
     );
