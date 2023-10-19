@@ -11,9 +11,54 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 50),
+        Row(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                border: Border.all(width: 3),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(20),
+                ),
+              ),
+              margin: const EdgeInsets.all(10),
+              child: const Row(
+                children: [
+                  SizedBox(width: 5),
+                  Icon(
+                    Icons.search,
+                    size: 30,
+                  ),
+                  SizedBox(
+                    width: 250,
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              width: 50,
+              height: 30,
+              child: Placeholder(),
+            ),
+            const Spacer(),
+            const Icon(
+              Icons.calendar_month,
+              size: 45,
+            ),
+          ],
+        ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(10, 40, 10, 50),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 20,
+          ),
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -29,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Icon(Icons.add_road),
                       SizedBox(width: 10),
-                      Text('Quãng đường đi'),
+                      Text('Total distance'),
                       Spacer(),
                       Text('30,00 km'),
                     ],
@@ -41,12 +86,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 left: 30,
                 child: Container(
                   height: 20,
-                  width: 70,
+                  width: 90,
                   color: Colors.white,
                   child: const Center(
                     child: Text(
-                      'Tháng 10',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      'October',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
                   ),
                 ),
@@ -55,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(10, 0, 10, 30),
+          padding: const EdgeInsets.fromLTRB(10, 0, 10, 30),
           height: 500,
           child: const SingleChildScrollView(
             child: Column(
@@ -69,6 +117,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 BoxItem(),
               ],
             ),
+          ),
+        ),
+        const Center(
+          child: Icon(
+            Icons.add_circle_outlined,
+            size: 50,
           ),
         )
       ],
@@ -86,21 +140,25 @@ class BoxItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black, width: 1.5),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(20),
+        ),
       ),
       height: 100,
       width: double.infinity,
       child: const Row(
         children: [
           Icon(Icons.directions_walk_outlined, size: 45),
+          Spacer(),
           Padding(
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text('10-10'),
+                Text('10-Oct'),
                 Spacer(),
-                Text('Công viên Hòa Bình'),
+                Text('Center Park'),
                 Spacer(),
-                Text('1 giờ 15 phút'),
+                Text('1 Hours 15 minutes'),
               ],
             ),
           ),
