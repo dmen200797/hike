@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:hiker/create_hike.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeTab extends StatefulWidget {
+  const HomeTab({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeTab> createState() => _HomeTabState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -119,10 +120,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        const Center(
-          child: Icon(
-            Icons.add_circle_outlined,
-            size: 50,
+         Center(
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const CreateHikeScreen()),
+              );
+            },
+            icon: const Icon(
+              Icons.add_circle_outlined,
+              size: 50,
+            ),
           ),
         )
       ],
