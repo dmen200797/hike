@@ -14,6 +14,22 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
   String countryValue = listCountry.first;
   String cityValue = listCity.first;
 
+  DateTime selectedDate = DateTime.now();
+
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -148,6 +164,37 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       },
                     ).toList(),
                   )
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  const Text(
+                    'Date:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Text(
+                    '*',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                    ),
+                  ),
+                  const SizedBox(width: 30),
+                  Text(
+                    "${selectedDate.toLocal()}".split(' ')[0],
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(width: 20),
+                  IconButton(
+                    onPressed: () {
+                      _selectDate(context);
+                    },
+                    icon: const Icon(
+                      Icons.calendar_month,
+                      size: 30,
+                    ),
+                  ),
                 ],
               )
             ],
