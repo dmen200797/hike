@@ -9,10 +9,28 @@ class CreateHikeScreen extends StatefulWidget {
 
 List<String> listCountry = ['Vietnam', 'China', 'UK', 'Japan'];
 List<String> listCity = ['Hanoi', 'Bejing', 'London', 'Tokyo'];
+List<String> hours = [
+  '',
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  '11',
+  '12'
+];
+List<String> minutes = ['', '0', '15', '30', '45'];
 
 class _CreateHikeScreenState extends State<CreateHikeScreen> {
   String countryValue = listCountry.first;
   String cityValue = listCity.first;
+  String hour = hours.first;
+  String minute = minutes.first;
 
   DateTime selectedDate = DateTime.now();
 
@@ -38,7 +56,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
       },
       child: Scaffold(
         body: Padding(
-          padding: EdgeInsets.fromLTRB(10, 40, 10, 10),
+          padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
           child: Column(
             children: [
               const Center(
@@ -126,7 +144,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                   ),
                   const Spacer(),
                   const Text(
-                    'Country:',
+                    'City:',
                     style: TextStyle(fontSize: 20),
                   ),
                   const Text(
@@ -183,7 +201,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                   const SizedBox(width: 30),
                   Text(
                     "${selectedDate.toLocal()}".split(' ')[0],
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(width: 20),
                   IconButton(
@@ -196,7 +215,85 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                   ),
                 ],
-              )
+              ),
+              Row(
+                children: [
+                  const Text(
+                    'Hiking time:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Text(
+                    '*',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                    ),
+                  ),
+                  const Spacer(),
+                  DropdownButton(
+                    value: hour,
+                    // icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(
+                      color: Colors.lightBlue,
+                      fontSize: 20,
+                    ),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.lightBlue,
+                    ),
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        hour = value!;
+                      });
+                    },
+                    items: hours.map<DropdownMenuItem<String>>(
+                      (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                  const Text(
+                    'hours:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Spacer(),
+                  DropdownButton(
+                    value: minute,
+                    // icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(
+                      color: Colors.lightBlue,
+                      fontSize: 20,
+                    ),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.lightBlue,
+                    ),
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        minute = value!;
+                      });
+                    },
+                    items: minutes.map<DropdownMenuItem<String>>(
+                      (String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      },
+                    ).toList(),
+                  ),const Text(
+                    'minutes:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
