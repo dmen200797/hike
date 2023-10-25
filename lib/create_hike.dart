@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class CreateHikeScreen extends StatefulWidget {
   const CreateHikeScreen({super.key});
@@ -292,6 +293,68 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     'minutes:',
                     style: TextStyle(fontSize: 20),
                   ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                children: [
+                  Text(
+                    'Length:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    '*',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 250,
+                    height: 30,
+                    child: TextField(
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                      decoration: InputDecoration(
+                        suffixIcon: Align(
+                          widthFactor: 1.0,
+                          heightFactor: 1.0,
+                          child: Text('km')
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  const Text(
+                    'Difficulty level:',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Text(
+                    '*',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.red,
+                    ),
+                  ),
+                  RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    itemCount: 5,
+                    itemSize: 30,
+                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.circle,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  )
                 ],
               ),
             ],
