@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hiker/main.dart';
 
 class CreateHikeScreen extends StatefulWidget {
   const CreateHikeScreen({super.key});
@@ -26,13 +27,15 @@ List<String> hours = [
   '12'
 ];
 List<String> minutes = ['', '0', '15', '30', '45'];
+List parkingOption = ['Yes', 'No'];
+String currentOption = parkingOption[0];
 
 class _CreateHikeScreenState extends State<CreateHikeScreen> {
   String countryValue = listCountry.first;
   String cityValue = listCity.first;
   String hour = hours.first;
   String minute = minutes.first;
-
+  double difficulty = 1;
   DateTime selectedDate = DateTime.now();
 
   _selectDate(BuildContext context) async {
@@ -49,6 +52,10 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
     }
   }
 
+  final nameHikeController = TextEditingController();
+  final lengthController = TextEditingController();
+  final descriptionController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -56,308 +63,423 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
-          child: Column(
-            children: [
-              const Center(
-                child: SizedBox(
-                  width: 300,
-                  child: TextField(
-                    cursorColor: Colors.white,
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      fillColor: Colors.lightBlue,
-                      filled: true,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
+            child: Column(
+              children: [
+                Center(
+                  child: SizedBox(
+                    width: 300,
+                    child: TextField(
+                      controller: nameHikeController,
+                      cursorColor: Colors.white,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                      decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          fillColor: Colors.lightBlue,
+                          filled: true,
+                          hintText: 'Name of hike',
+                          hintStyle: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              const Row(
-                children: [
-                  Text(
-                    'Name of hike:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Text(
+                      'Country:',
+                      style: TextStyle(fontSize: 20),
                     ),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    height: 30,
-                    child: TextField(
+                    const Text(
+                      '*',
                       style: TextStyle(
                         fontSize: 20,
+                        color: Colors.red,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Text(
-                    'Country:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  DropdownButton(
-                    value: countryValue,
-                    // icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 20,
-                    ),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightBlue,
-                    ),
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        countryValue = value!;
-                      });
-                    },
-                    items: listCountry.map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                  const Spacer(),
-                  const Text(
-                    'City:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  DropdownButton(
-                    value: cityValue,
-                    // icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 20,
-                    ),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightBlue,
-                    ),
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        cityValue = value!;
-                      });
-                    },
-                    items: listCity.map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      },
-                    ).toList(),
-                  )
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Text(
-                    'Date:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                    ),
-                  ),
-                  const SizedBox(width: 30),
-                  Text(
-                    "${selectedDate.toLocal()}".split(' ')[0],
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(width: 20),
-                  IconButton(
-                    onPressed: () {
-                      _selectDate(context);
-                    },
-                    icon: const Icon(
-                      Icons.calendar_month,
-                      size: 30,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  const Text(
-                    'Hiking time:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                    ),
-                  ),
-                  const Spacer(),
-                  DropdownButton(
-                    value: hour,
-                    // icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 20,
-                    ),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightBlue,
-                    ),
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        hour = value!;
-                      });
-                    },
-                    items: hours.map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                  const Text(
-                    'hours:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  const Spacer(),
-                  DropdownButton(
-                    value: minute,
-                    // icon: const Icon(Icons.arrow_downward),
-                    elevation: 16,
-                    style: const TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 20,
-                    ),
-                    underline: Container(
-                      height: 2,
-                      color: Colors.lightBlue,
-                    ),
-                    onChanged: (String? value) {
-                      // This is called when the user selects an item.
-                      setState(() {
-                        minute = value!;
-                      });
-                    },
-                    items: minutes.map<DropdownMenuItem<String>>(
-                      (String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      },
-                    ).toList(),
-                  ),const Text(
-                    'minutes:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Row(
-                children: [
-                  Text(
-                    'Length:',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 250,
-                    height: 30,
-                    child: TextField(
-                      style: TextStyle(
+                    const SizedBox(width: 10),
+                    DropdownButton(
+                      value: countryValue,
+                      // icon: const Icon(Icons.arrow_downward),
+                      elevation: 16,
+                      style: const TextStyle(
+                        color: Colors.lightBlue,
                         fontSize: 20,
                       ),
-                      decoration: InputDecoration(
-                        suffixIcon: Align(
-                          widthFactor: 1.0,
-                          heightFactor: 1.0,
-                          child: Text('km')
+                      underline: Container(
+                        height: 2,
+                        color: Colors.lightBlue,
+                      ),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          countryValue = value!;
+                        });
+                      },
+                      items: listCountry.map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                    const Spacer(),
+                    const Text(
+                      'City:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    DropdownButton(
+                      value: cityValue,
+                      // icon: const Icon(Icons.arrow_downward),
+                      elevation: 16,
+                      style: const TextStyle(
+                        color: Colors.lightBlue,
+                        fontSize: 20,
+                      ),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.lightBlue,
+                      ),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          cityValue = value!;
+                        });
+                      },
+                      items: listCity.map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Text(
+                      'Date:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const SizedBox(width: 30),
+                    Text(
+                      "${selectedDate.toLocal()}".split(' ')[0],
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 20),
+                    IconButton(
+                      onPressed: () {
+                        _selectDate(context);
+                      },
+                      icon: const Icon(
+                        Icons.calendar_month,
+                        size: 30,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text(
+                      'Hiking time:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                    const Spacer(),
+                    DropdownButton(
+                      value: hour,
+                      // icon: const Icon(Icons.arrow_downward),
+                      elevation: 16,
+                      style: const TextStyle(
+                        color: Colors.lightBlue,
+                        fontSize: 20,
+                      ),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.lightBlue,
+                      ),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          hour = value!;
+                        });
+                      },
+                      items: hours.map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                    const Text(
+                      'hours:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Spacer(),
+                    DropdownButton(
+                      value: minute,
+                      // icon: const Icon(Icons.arrow_downward),
+                      elevation: 16,
+                      style: const TextStyle(
+                        color: Colors.lightBlue,
+                        fontSize: 20,
+                      ),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.lightBlue,
+                      ),
+                      onChanged: (String? value) {
+                        // This is called when the user selects an item.
+                        setState(() {
+                          minute = value!;
+                        });
+                      },
+                      items: minutes.map<DropdownMenuItem<String>>(
+                        (String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                    const Text(
+                      'minutes:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    const Text(
+                      'Length:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 250,
+                      height: 30,
+                      child: TextField(
+                        controller: lengthController,
+                        style: const TextStyle(
+                          fontSize: 20,
+                        ),
+                        decoration: const InputDecoration(
+                          suffixIcon: Align(
+                              widthFactor: 1.0,
+                              heightFactor: 1.0,
+                              child: Text('km')),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Text(
+                      'Difficulty level:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                    RatingBar.builder(
+                      initialRating: 3,
+                      minRating: 1,
+                      itemCount: 5,
+                      itemSize: 30,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.circle,
+                        color: Colors.amber,
+                      ),
+                      onRatingUpdate: (rating) {
+                        difficulty = rating;
+                      },
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Text(
+                      'Parking available:',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    const Text(
+                      '*',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.red,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 100,
+                      child: ListTile(
+                        horizontalTitleGap: -10,
+                        title: const Text(
+                          'Yes',
+                        ),
+                        leading: Radio(
+                          value: parkingOption[0],
+                          groupValue: currentOption,
+                          onChanged: (value) {
+                            setState(() {
+                              currentOption = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 100,
+                      child: ListTile(
+                        horizontalTitleGap: -10,
+                        title: const Text(
+                          'No',
+                        ),
+                        leading: Radio(
+                          value: parkingOption[1],
+                          groupValue: currentOption,
+                          onChanged: (value) {
+                            setState(() {
+                              currentOption = value.toString();
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                const Text(
+                  'Description:',
+                  style: TextStyle(fontSize: 20),
+                ),
+                SizedBox(
+                  height: 150,
+                  child: TextField(
+                    controller: descriptionController,
+                    maxLines: null,
+                    expands: true,
+                    cursorColor: Colors.black,
+                    decoration: const InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 2,
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  const Text(
-                    'Difficulty level:',
-                    style: TextStyle(fontSize: 20),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                  child: Row(
+                    children: [
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            size: 60,
+                          ),
+                          Text('Add photos')
+                        ],
+                      ),
+                      Spacer(),
+                      Column(
+                        children: [
+                          Icon(
+                            Icons.videocam_rounded,
+                            size: 60,
+                          ),
+                          Text('Add videos')
+                        ],
+                      )
+                    ],
                   ),
-                  const Text(
-                    '*',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.red,
-                    ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                  child: Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: const Text('Cancel'),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: () {
+                          HikeDetail hike = HikeDetail(
+                            hikeName: nameHikeController.text,
+                            country: countryValue,
+                            city: cityValue,
+                            date: '${selectedDate.toLocal()}'.split(' ')[0],
+                            time: '$hour hour $minute minutes',
+                            length: lengthController.text,
+                            difficulty: difficulty,
+                            parking: currentOption,
+                            description: descriptionController.text,
+                          );
+                          Navigator.pop(context,hike);
+                        },
+                        child: const Text('Save'),
+                      ),
+                    ],
                   ),
-                  RatingBar.builder(
-                    initialRating: 3,
-                    minRating: 1,
-                    itemCount: 5,
-                    itemSize: 30,
-                    itemPadding: const EdgeInsets.symmetric(horizontal: 2.0),
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.circle,
-                      color: Colors.amber,
-                    ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  )
-                ],
-              ),
-            ],
+                )
+              ],
+            ),
           ),
         ),
       ),
