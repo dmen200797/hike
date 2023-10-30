@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hiker/hike_detail.dart';
 
 import 'create_hike.dart';
 
@@ -10,8 +11,9 @@ class HikeDetail {
   final String hikeName;
   final String country;
   final String city;
-  final String date;
-  final String time;
+  final DateTime date;
+  final String hour;
+  final String minute;
   final double length;
   final double difficulty;
   final String parking;
@@ -22,7 +24,8 @@ class HikeDetail {
     required this.country,
     required this.city,
     required this.date,
-    required this.time,
+    required this.hour,
+    required this.minute,
     required this.length,
     required this.difficulty,
     required this.parking,
@@ -170,7 +173,27 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemCount: listHike.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return BoxItem(hikeDetail: listHike[index]);
+                  return InkWell(
+                    onTap: () async {
+                      HikeDetail hike = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HikeDetailScreen(
+                            hike: listHike[index],
+                          ),
+                        ),
+                      );
+                      listHike[index] = hike;
+                      totalDistance = 0;
+                      for (hike in listHike) {
+                        totalDistance += hike.length;
+                      }
+                      setState(() {});
+                    },
+                    child: BoxItem(
+                      hikeDetail: listHike[index],
+                    ),
+                  );
                 },
               ),
             ),
@@ -227,11 +250,11 @@ class BoxItem extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(
               children: [
-                Text(hikeDetail.date),
+                Text('${hikeDetail.date.toLocal()}'.split(' ')[0]),
                 const Spacer(),
                 Text(hikeDetail.hikeName),
                 const Spacer(),
-                Text(hikeDetail.time),
+                Text('${hikeDetail.hour} hour ${hikeDetail.minute} minutes'),
               ],
             ),
           ),
