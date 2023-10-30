@@ -58,6 +58,28 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future<void> showMyDialog(String text) async {
+      return showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Alert'),
+            content: Text(text),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Ok'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -67,6 +89,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
           child: Padding(
             padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
                   child: SizedBox(
@@ -299,6 +322,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       width: 250,
                       height: 30,
                       child: TextField(
+                        keyboardType: TextInputType.number,
                         controller: lengthController,
                         style: const TextStyle(
                           fontSize: 20,
@@ -454,24 +478,38 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                   child: Row(
                     children: [
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         child: const Text('Cancel'),
                       ),
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
-                          HikeDetail hike = HikeDetail(
-                            hikeName: nameHikeController.text,
-                            country: countryValue,
-                            city: cityValue,
-                            date: '${selectedDate.toLocal()}'.split(' ')[0],
-                            time: '$hour hour $minute minutes',
-                            length: lengthController.text,
-                            difficulty: difficulty,
-                            parking: currentOption,
-                            description: descriptionController.text,
-                          );
-                          Navigator.pop(context,hike);
+                          if(nameHikeController.text.isEmpty) {
+                            showMyDialog('Name of Hike is missing');
+                          } else if(hour.isEmpty && minute.isEmpty) {
+                            showMyDialog('Hiking time is missing');
+                          } else if(lengthController.text.isEmpty) {
+                            showMyDialog('Length is missing');
+                          } else if(double.tryParse(lengthController.text) == null) {
+                            showMyDialog('Length must be a positive number');
+                          } else if(double.tryParse(lengthController.text)! < 0) {
+                            showMyDialog('Length must be a positive number');
+                          } else {
+                            HikeDetail hike = HikeDetail(
+                              hikeName: nameHikeController.text,
+                              country: countryValue,
+                              city: cityValue,
+                              date: '${selectedDate.toLocal()}'.split(' ')[0],
+                              time: '$hour hour $minute minutes',
+                              length: double.tryParse(lengthController.text) ?? 0,
+                              difficulty: difficulty,
+                              parking: currentOption,
+                              description: descriptionController.text,
+                            );
+                            Navigator.pop(context,hike);
+                          }
                         },
                         child: const Text('Save'),
                       ),

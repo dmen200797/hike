@@ -12,7 +12,7 @@ class HikeDetail {
   final String city;
   final String date;
   final String time;
-  final String length;
+  final double length;
   final double difficulty;
   final String parking;
   final String description;
@@ -53,6 +53,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   HikeDetail? hike;
   List<HikeDetail> listHike = [];
+  double totalDistance = 0;
 
   @override
   void initState() {
@@ -130,14 +131,14 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     height: 70,
                     width: double.infinity,
-                    child: const Center(
+                    child: Center(
                       child: Row(
                         children: [
-                          Icon(Icons.add_road),
-                          SizedBox(width: 10),
-                          Text('Total distance'),
-                          Spacer(),
-                          Text('30,00 km'),
+                          const Icon(Icons.add_road),
+                          const SizedBox(width: 10),
+                          const Text('Total distance'),
+                          const Spacer(),
+                          Text('$totalDistance km'),
                         ],
                       ),
                     ),
@@ -164,14 +165,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Container(
-                padding: const EdgeInsets.fromLTRB(10, 0, 10, 30),
-                height: 500,
-                child: ListView.builder(
-                  itemCount: listHike.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return BoxItem(hikeDetail: listHike[index]);
-                  },
-                )),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 30),
+              height: 500,
+              child: ListView.builder(
+                itemCount: listHike.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return BoxItem(hikeDetail: listHike[index]);
+                },
+              ),
+            ),
             Center(
               child: IconButton(
                 onPressed: () async {
@@ -181,6 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (context) => const CreateHikeScreen()),
                   );
                   listHike.add(hike);
+                  totalDistance += hike.length;
                   setState(() {});
                 },
                 icon: const Icon(
@@ -233,7 +236,7 @@ class BoxItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          Text('${hikeDetail.length} km'),
+          Text('${hikeDetail.length.toString()} km'),
           const Spacer(),
           const Icon(Icons.navigate_next),
         ],
