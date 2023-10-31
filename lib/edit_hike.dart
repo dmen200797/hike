@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hiker/main.dart';
 
-class CreateHikeScreen extends StatefulWidget {
-  const CreateHikeScreen({super.key});
+class EditHikeScreen extends StatefulWidget {
+  const EditHikeScreen({super.key, required this.hike});
+  final HikeDetail hike;
 
   @override
-  State<CreateHikeScreen> createState() => _CreateHikeScreenState();
+  State<EditHikeScreen> createState() => _EditHikeScreenState();
 }
 
 List<String> listCountry = ['Vietnam', 'China', 'UK', 'Japan'];
@@ -29,14 +30,32 @@ List<String> hours = [
 List<String> minutes = ['0', '15', '30', '45'];
 List parkingOption = ['Yes', 'No'];
 
-class _CreateHikeScreenState extends State<CreateHikeScreen> {
-  String countryValue = listCountry.first;
-  String cityValue = listCity.first;
-  String hour = hours.first;
-  String minute = minutes.first;
+class _EditHikeScreenState extends State<EditHikeScreen> {
+  String countryValue = '';
+  String cityValue = '';
+  String hour = '';
+  String minute = '';
   double difficulty = 1;
-  String currentOption = parkingOption[0];
+  String currentOption = '';
   DateTime selectedDate = DateTime.now();
+  TextEditingController nameHikeController = TextEditingController();
+  TextEditingController lengthController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    countryValue = widget.hike.country;
+    cityValue = widget.hike.city;
+    hour = widget.hike.hour;
+    minute = widget.hike.minute;
+    difficulty = widget.hike.difficulty;
+    currentOption = widget.hike.parking;
+    selectedDate = widget.hike.date;
+    nameHikeController = TextEditingController(text: widget.hike.hikeName);
+    lengthController = TextEditingController(text: widget.hike.length.toString());
+    descriptionController = TextEditingController(text: widget.hike.description);
+    super.initState();
+  }
 
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -52,9 +71,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
     }
   }
 
-  final nameHikeController = TextEditingController();
-  final lengthController = TextEditingController();
-  final descriptionController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +160,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         });
                       },
                       items: listCountry.map<DropdownMenuItem<String>>(
-                        (String value) {
+                            (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -183,7 +200,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         });
                       },
                       items: listCity.map<DropdownMenuItem<String>>(
-                        (String value) {
+                            (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -209,7 +226,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                     const SizedBox(width: 30),
                     Text(
-                      '${selectedDate.toLocal()}'.split(' ')[0],
+                      "${selectedDate.toLocal()}".split(' ')[0],
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
@@ -258,7 +275,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         });
                       },
                       items: hours.map<DropdownMenuItem<String>>(
-                        (String value) {
+                            (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -290,7 +307,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         });
                       },
                       items: minutes.map<DropdownMenuItem<String>>(
-                        (String value) {
+                            (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -474,7 +491,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                 ),
                 Padding(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                  const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                   child: Row(
                     children: [
                       ElevatedButton(
@@ -488,7 +505,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         onPressed: () {
                           if(nameHikeController.text.isEmpty) {
                             showMyDialog('Name of Hike is missing');
-                          } else if(hour == '0' && minute == '0') {
+                          } else if(hour.isEmpty && minute.isEmpty) {
                             showMyDialog('Hiking time is missing');
                           } else if(lengthController.text.isEmpty) {
                             showMyDialog('Length is missing');

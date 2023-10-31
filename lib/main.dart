@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hiker/edit_hike.dart';
 import 'package:hiker/hike_detail.dart';
 
 import 'create_hike.dart';
@@ -8,16 +9,17 @@ void main() {
 }
 
 class HikeDetail {
-  final String hikeName;
-  final String country;
-  final String city;
-  final DateTime date;
-  final String hour;
-  final String minute;
-  final double length;
-  final double difficulty;
-  final String parking;
-  final String description;
+  String hikeName;
+  String country;
+  String city;
+  DateTime date;
+  String hour;
+  String minute;
+  double length;
+  double difficulty;
+  String parking;
+  String description;
+  bool isDelete;
 
   HikeDetail({
     required this.hikeName,
@@ -30,6 +32,7 @@ class HikeDetail {
     required this.difficulty,
     required this.parking,
     required this.description,
+    required this.isDelete,
   });
 }
 
@@ -183,7 +186,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ),
                       );
-                      listHike[index] = hike;
+                      if(hike.isDelete) {
+                        listHike.removeAt(index);
+                      } else {
+                        listHike[index] = hike;
+                      }
                       totalDistance = 0;
                       for (hike in listHike) {
                         totalDistance += hike.length;
