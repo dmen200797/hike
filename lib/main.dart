@@ -47,27 +47,15 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, this.hike});
-
-  final HikeDetail? hike;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  HikeDetail? hike;
   List<HikeDetail> listHike = [];
   double totalDistance = 0;
-
-  @override
-  void initState() {
-    hike = widget.hike;
-    if (hike != null) {
-      listHike.add(hike!);
-    }
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
