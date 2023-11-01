@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hiker/edit_hike.dart';
 import 'package:hiker/hike_detail.dart';
 
 import 'create_hike.dart';

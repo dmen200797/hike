@@ -13,26 +13,6 @@ class HikeDetailScreen extends StatefulWidget {
   State<HikeDetailScreen> createState() => _HikeDetailScreenState();
 }
 
-List<String> listCountry = ['Vietnam', 'China', 'UK', 'Japan'];
-List<String> listCity = ['Hanoi', 'Bejing', 'London', 'Tokyo'];
-List<String> hours = [
-  '0',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '10',
-  '11',
-  '12'
-];
-List<String> minutes = ['0', '15', '30', '45'];
-List parkingOption = ['Yes', 'No'];
-
 class _HikeDetailScreenState extends State<HikeDetailScreen> {
   late HikeDetail currentHike;
   String countryValue = '';
