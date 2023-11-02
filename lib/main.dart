@@ -66,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 50),
             Row(

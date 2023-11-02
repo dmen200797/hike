@@ -35,7 +35,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
   String hour = hours.first;
   String minute = minutes.first;
   double difficulty = 1;
-  String currentOption = parkingOption[0];
+  String parkingOpt = parkingOption[0];
   DateTime selectedDate = DateTime.now();
 
   _selectDate(BuildContext context) async {
@@ -390,10 +390,10 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         ),
                         leading: Radio(
                           value: parkingOption[0],
-                          groupValue: currentOption,
+                          groupValue: parkingOpt,
                           onChanged: (value) {
                             setState(() {
-                              currentOption = value.toString();
+                              parkingOpt = value.toString();
                             });
                           },
                         ),
@@ -408,10 +408,10 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         ),
                         leading: Radio(
                           value: parkingOption[1],
-                          groupValue: currentOption,
+                          groupValue: parkingOpt,
                           onChanged: (value) {
                             setState(() {
-                              currentOption = value.toString();
+                              parkingOpt = value.toString();
                             });
                           },
                         ),
@@ -506,7 +506,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                               minute: minute,
                               length: double.tryParse(lengthController.text) ?? 0,
                               difficulty: difficulty,
-                              parking: currentOption,
+                              parking: parkingOpt,
                               description: descriptionController.text,
                               isDelete: false,
                             );
