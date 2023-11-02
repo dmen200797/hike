@@ -32,13 +32,13 @@ List parkingOption = ['Yes', 'No'];
 class _CreateHikeScreenState extends State<CreateHikeScreen> {
   String countryValue = listCountry.first;
   String cityValue = listCity.first;
+  DateTime selectedDate = DateTime.now();
   String hour = hours.first;
-  String minute = minutes.first;
+  String minute = minutes.first; //=> khởi tạo ra giá trị mặc định
   double difficulty = 1;
   String parkingOpt = parkingOption[0];
-  DateTime selectedDate = DateTime.now();
 
-  _selectDate(BuildContext context) async {
+  _selectDate(BuildContext context) async { //gọi ra date picker
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -47,12 +47,12 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
-        selectedDate = picked;
+        selectedDate = picked;// thay đổi ngày đã chọn vào biến selectedDate
       });
     }
   }
 
-  final nameHikeController = TextEditingController();
+  final nameHikeController = TextEditingController(); //controller của textfield -> lấy ra giá trị user đax nhập vào textfield
   final lengthController = TextEditingController();
   final descriptionController = TextEditingController();
 
@@ -60,7 +60,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
   Widget build(BuildContext context) {
 
     Future<void> showMyDialog(String text) async {
-      return showDialog<void>(
+      return showDialog<void>(  //show ra pop-up Dialog cảnh báo
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -95,7 +95,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                   child: SizedBox(
                     width: 300,
                     child: TextField(
-                      controller: nameHikeController,
+                      controller: nameHikeController, //gắn controllẻr vào textfield
                       cursorColor: Colors.white,
                       style: const TextStyle(
                         color: Colors.white,
@@ -323,7 +323,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       height: 30,
                       child: TextField(
                         keyboardType: TextInputType.number,
-                        controller: lengthController,
+                        controller: lengthController, //gắn controllẻr vào textfield
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -426,7 +426,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                 SizedBox(
                   height: 150,
                   child: TextField(
-                    controller: descriptionController,
+                    controller: descriptionController, //gắn controllẻr vào textfield
                     maxLines: null,
                     expands: true,
                     cursorColor: Colors.black,
@@ -485,21 +485,21 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       ),
                       const Spacer(),
                       ElevatedButton(
-                        onPressed: () {
-                          if(nameHikeController.text.isEmpty) {
+                        onPressed: () { //Validate dữ liệu
+                          if(nameHikeController.text.isEmpty) { //lấy ra text trong textfiled, check có rỗng hay không?
                             showMyDialog('Name of Hike is missing');
                           } else if(hour == '0' && minute == '0') {
                             showMyDialog('Hiking time is missing');
                           } else if(lengthController.text.isEmpty) {
                             showMyDialog('Length is missing');
-                          } else if(double.tryParse(lengthController.text) == null) {
+                          } else if(double.tryParse(lengthController.text) == null) { //check kiểu dữ liệu đã đúng hay chưa
                             showMyDialog('Length must be a positive number');
-                          } else if(double.tryParse(lengthController.text)! < 0) {
+                          } else if(double.tryParse(lengthController.text)! < 0) {//check số âm
                             showMyDialog('Length must be a positive number');
-                          } else {
+                          } else { //nếu pass -> taoj Hike
                             HikeDetail hike = HikeDetail(
-                              hikeName: nameHikeController.text,
-                              country: countryValue,
+                              hikeName: nameHikeController.text, //=> Tạo hike gồm các dữ liệu phía dưới
+                              country: countryValue, //gắn dữ liệu vào country (class hike detail)
                               city: cityValue,
                               date: selectedDate,
                               hour: hour,
@@ -510,10 +510,10 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                               description: descriptionController.text,
                               isDelete: false,
                             );
-                            Navigator.pop(context,hike);
+                            Navigator.pop(context,hike); //sẽ back lại màn trước và truyền HIke ra màn main
                           }
                         },
-                        child: const Text('Save'),
+                        child: const Text('Save'), //
                       ),
                     ],
                   ),

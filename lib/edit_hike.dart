@@ -71,8 +71,6 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
 

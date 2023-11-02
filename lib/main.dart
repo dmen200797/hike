@@ -59,12 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return GestureDetector(//bắt thao tác người dùng lên màn hình
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode()); //khi click ra ngoài -> bỏ focus khỏi textfield
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false, //màn hình không bị resize khi keyboard hiện lên, gây ra lỗi UI
         body: Column(
           children: [
             const SizedBox(height: 50),
@@ -166,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     onTap: () async {
                       HikeDetail hike = await Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        MaterialPageRoute( //nơi đẩy sang màn hike detail
                           builder: (context) => HikeDetailScreen(
                             hike: listHike[index],
                           ),
@@ -183,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
                       setState(() {});
                     },
-                    child: BoxItem(
+                    child: BoxItem(//hiển ra thông số vừa tạo bao gồm data list
                       hikeDetail: listHike[index],
                     ),
                   );
@@ -191,15 +191,15 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Center(
-              child: IconButton(
-                onPressed: () async {
-                  HikeDetail hike = await Navigator.push(
+              child: IconButton( //
+                onPressed: () async {//
+                  HikeDetail hike = await Navigator.push(// dùng để di chuyển giưã các màn
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CreateHikeScreen()),
+                        builder: (context) => const CreateHikeScreen()), //di chuyển sang Create Hike
                   );
-                  listHike.add(hike);
-                  totalDistance += hike.length;
+                  listHike.add(hike); //add HIke vừa tạo vào list hike
+                  totalDistance += hike.length; //cộng thêm length vào hike
                   setState(() {});
                 },
                 icon: const Icon(
