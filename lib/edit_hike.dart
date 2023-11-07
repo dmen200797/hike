@@ -141,7 +141,6 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                     const SizedBox(width: 10),
                     DropdownButton(
                       value: countryValue,
-                      // icon: const Icon(Icons.arrow_downward),
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -152,7 +151,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
+                        
                         setState(() {
                           countryValue = value!;
                         });
@@ -181,7 +180,6 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                     const SizedBox(width: 10),
                     DropdownButton(
                       value: cityValue,
-                      // icon: const Icon(Icons.arrow_downward),
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -192,7 +190,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
+                        
                         setState(() {
                           cityValue = value!;
                         });
@@ -256,7 +254,6 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                     const Spacer(),
                     DropdownButton(
                       value: hour,
-                      // icon: const Icon(Icons.arrow_downward),
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -267,7 +264,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
+                        
                         setState(() {
                           hour = value!;
                         });
@@ -288,7 +285,6 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                     const Spacer(),
                     DropdownButton(
                       value: minute,
-                      // icon: const Icon(Icons.arrow_downward),
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -299,7 +295,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
+                        
                         setState(() {
                           minute = value!;
                         });

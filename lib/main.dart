@@ -164,19 +164,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () async {
-                      HikeDetail hike = await Navigator.push(
+                      HikeDetail hike = await Navigator.push(// Tạo 1 obj hike để hứng data từ màn HikeDetail trả về
                         context,
-                        MaterialPageRoute( //nơi đẩy sang màn hike detail
+                        MaterialPageRoute( //Navigate sang màn hike detail
                           builder: (context) => HikeDetailScreen(
                             hike: listHike[index],
                           ),
                         ),
                       );
+
+                      //sau khi có đc data từ màn HikeDetail trả về, check xem hike đó có bị delete hay ko
                       if(hike.isDelete) {
                         listHike.removeAt(index);
-                      } else {
+                      } else { //nếu ko bị delete thì update lại hike đó theo data mới
                         listHike[index] = hike;
                       }
+
+                      //Tính lại totalDistance
                       totalDistance = 0;
                       for (hike in listHike) {
                         totalDistance += hike.length;
@@ -191,8 +195,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             Center(
-              child: IconButton( //
-                onPressed: () async {//
+              child: IconButton(
+                onPressed: () async {
                   HikeDetail hike = await Navigator.push(// dùng để di chuyển giưã các màn
                     context,
                     MaterialPageRoute(

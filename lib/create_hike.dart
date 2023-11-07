@@ -510,10 +510,10 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                               description: descriptionController.text,
                               isDelete: false,
                             );
-                            Navigator.pop(context,hike); //sẽ back lại màn trước và truyền HIke ra màn main
+                            Navigator.pop(context,hike); //sẽ back lại màn trước và truyền Hike về màn trước(màn main)
                           }
                         },
-                        child: const Text('Save'), //
+                        child: const Text('Save'),
                       ),
                     ],
                   ),
