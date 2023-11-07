@@ -87,7 +87,12 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
                         child: Container(
                           width: 300,
                           height: 50,
-                          color: Colors.lightBlue,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(20),
+                            ),
+                            color: Colors.black,
+                          ),
                           child: Center(
                             child: Text(
                               nameHike,

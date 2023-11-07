@@ -38,7 +38,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
   double difficulty = 1;
   String parkingOpt = parkingOption[0];
 
-  _selectDate(BuildContext context) async { //gọi ra date picker
+  _selectDate(BuildContext context) async {
+    //gọi ra date picker
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -47,20 +48,21 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
-        selectedDate = picked;// thay đổi ngày đã chọn vào biến selectedDate
+        selectedDate = picked; // thay đổi ngày đã chọn vào biến selectedDate
       });
     }
   }
 
-  final nameHikeController = TextEditingController(); //controller của textfield -> lấy ra giá trị user đax nhập vào textfield
+  final nameHikeController =
+      TextEditingController(); //controller của textfield -> lấy ra giá trị user đax nhập vào textfield
   final lengthController = TextEditingController();
   final descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     Future<void> showMyDialog(String text) async {
-      return showDialog<void>(  //show ra pop-up Dialog cảnh báo
+      return showDialog<void>(
+        //show ra pop-up Dialog cảnh báo
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
@@ -79,7 +81,6 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
       );
     }
 
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -95,17 +96,25 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                   child: SizedBox(
                     width: 300,
                     child: TextField(
-                      controller: nameHikeController, //gắn controllẻr vào textfield
+                      controller: nameHikeController,
+                      //gắn controllẻr vào textfield
                       cursorColor: Colors.white,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
-                      decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.lightBlue,
-                          filled: true,
-                          hintText: 'Name of hike',
-                          hintStyle: TextStyle(color: Colors.white)),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        fillColor: Colors.black,
+                        filled: true,
+                        hintText: 'Name of hike',
+                        hintStyle: const TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
@@ -323,7 +332,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       height: 30,
                       child: TextField(
                         keyboardType: TextInputType.number,
-                        controller: lengthController, //gắn controllẻr vào textfield
+                        controller: lengthController,
+                        //gắn controllẻr vào textfield
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -426,7 +436,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                 SizedBox(
                   height: 150,
                   child: TextField(
-                    controller: descriptionController, //gắn controllẻr vào textfield
+                    controller: descriptionController,
+                    //gắn controllẻr vào textfield
                     maxLines: null,
                     expands: true,
                     cursorColor: Colors.black,
@@ -485,32 +496,43 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       ),
                       const Spacer(),
                       ElevatedButton(
-                        onPressed: () { //Validate dữ liệu
-                          if(nameHikeController.text.isEmpty) { //lấy ra text trong textfiled, check có rỗng hay không?
+                        onPressed: () {
+                          //Validate dữ liệu
+                          if (nameHikeController.text.isEmpty) {
+                            //lấy ra text trong textfiled, check có rỗng hay không?
                             showMyDialog('Name of Hike is missing');
-                          } else if(hour == '0' && minute == '0') {
+                          } else if (hour == '0' && minute == '0') {
                             showMyDialog('Hiking time is missing');
-                          } else if(lengthController.text.isEmpty) {
+                          } else if (lengthController.text.isEmpty) {
                             showMyDialog('Length is missing');
-                          } else if(double.tryParse(lengthController.text) == null) { //check kiểu dữ liệu đã đúng hay chưa
+                          } else if (double.tryParse(lengthController.text) ==
+                              null) {
+                            //check kiểu dữ liệu đã đúng hay chưa
                             showMyDialog('Length must be a positive number');
-                          } else if(double.tryParse(lengthController.text)! < 0) {//check số âm
+                          } else if (double.tryParse(lengthController.text)! <
+                              0) {
+                            //check số âm
                             showMyDialog('Length must be a positive number');
-                          } else { //nếu pass -> taoj Hike
+                          } else {
+                            //nếu pass -> taoj Hike
                             HikeDetail hike = HikeDetail(
-                              hikeName: nameHikeController.text, //=> Tạo hike gồm các dữ liệu phía dưới
-                              country: countryValue, //gắn dữ liệu vào country (class hike detail)
+                              hikeName: nameHikeController.text,
+                              //=> Tạo hike gồm các dữ liệu phía dưới
+                              country: countryValue,
+                              //gắn dữ liệu vào country (class hike detail)
                               city: cityValue,
                               date: selectedDate,
                               hour: hour,
                               minute: minute,
-                              length: double.tryParse(lengthController.text) ?? 0,
+                              length:
+                                  double.tryParse(lengthController.text) ?? 0,
                               difficulty: difficulty,
                               parking: parkingOpt,
                               description: descriptionController.text,
                               isDelete: false,
                             );
-                            Navigator.pop(context,hike); //sẽ back lại màn trước và truyền Hike về màn trước(màn main)
+                            Navigator.pop(context,
+                                hike); //sẽ back lại màn trước và truyền Hike về màn trước(màn main)
                           }
                         },
                         child: const Text('Save'),

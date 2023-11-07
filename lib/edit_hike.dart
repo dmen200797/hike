@@ -111,16 +111,24 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                     width: 300,
                     child: TextField(
                       controller: nameHikeController,
+                      //gắn controllẻr vào textfield
                       cursorColor: Colors.white,
                       style: const TextStyle(
                         color: Colors.white,
                       ),
-                      decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.lightBlue,
-                          filled: true,
-                          hintText: 'Name of hike',
-                          hintStyle: TextStyle(color: Colors.white)),
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),
+                          borderSide: const BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        fillColor: Colors.black,
+                        filled: true,
+                        hintText: 'Name of hike',
+                        hintStyle: const TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
