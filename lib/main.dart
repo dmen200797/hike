@@ -8,6 +8,7 @@ void main() {
 }
 
 class HikeDetail {
+  int id;
   String hikeName;
   String country;
   String city;
@@ -18,9 +19,9 @@ class HikeDetail {
   double difficulty;
   String parking;
   String description;
-  bool isDelete;
 
   HikeDetail({
+    required this.id,
     required this.hikeName,
     required this.country,
     required this.city,
@@ -31,8 +32,21 @@ class HikeDetail {
     required this.difficulty,
     required this.parking,
     required this.description,
-    required this.isDelete,
   });
+
+  factory HikeDetail.fromSql(Map<String, dynamic> map) => HikeDetail(
+        id: map['id'].toInt() ?? 0,
+        hikeName: map['hikeName'] ?? '',
+        country: map['country'] ?? '',
+        city: map['city'] ?? '',
+        date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+        hour: map['hour'] ?? '',
+        minute: map['minute'] ?? '',
+        length: double.parse(map['length']),
+        difficulty: double.parse(map['difficulty']),
+        parking: map['parking'] ?? '',
+        description: map['description'] ?? '',
+      );
 }
 
 class MyApp extends StatelessWidget {
@@ -59,12 +73,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(//bắt thao tác người dùng lên màn hình
+    return GestureDetector(
+      //bắt thao tác người dùng lên màn hình
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode()); //khi click ra ngoài -> bỏ focus khỏi textfield
+        FocusScope.of(context).requestFocus(
+            FocusNode()); //khi click ra ngoài -> bỏ focus khỏi textfield
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false, //màn hình không bị resize khi keyboard hiện lên, gây ra lỗi UI
+        resizeToAvoidBottomInset: false,
+        //màn hình không bị resize khi keyboard hiện lên, gây ra lỗi UI
         body: Column(
           children: [
             const SizedBox(height: 50),
@@ -164,9 +181,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () async {
-                      HikeDetail hike = await Navigator.push(// Tạo 1 obj hike để hứng data từ màn HikeDetail trả về
+                      HikeDetail hike = await Navigator.push(
+                        // Tạo 1 obj hike để hứng data từ màn HikeDetail trả về
                         context,
-                        MaterialPageRoute( //Navigate sang màn hike detail
+                        MaterialPageRoute(
+                          //Navigate sang màn hike detail
                           builder: (context) => HikeDetailScreen(
                             hike: listHike[index],
                           ),
@@ -174,9 +193,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       );
 
                       //sau khi có đc data từ màn HikeDetail trả về, check xem hike đó có bị delete hay ko
-                      if(hike.isDelete) {
+                      if (hike.isDelete) {
                         listHike.removeAt(index);
-                      } else { //nếu ko bị delete thì update lại hike đó theo data mới
+                      } else {
+                        //nếu ko bị delete thì update lại hike đó theo data mới
                         listHike[index] = hike;
                       }
 
@@ -187,7 +207,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       }
                       setState(() {});
                     },
-                    child: BoxItem(//hiển ra thông số vừa tạo bao gồm data list
+                    child: BoxItem(
+                      //hiển ra thông số vừa tạo bao gồm data list
                       hikeDetail: listHike[index],
                     ),
                   );
@@ -197,10 +218,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Center(
               child: IconButton(
                 onPressed: () async {
-                  HikeDetail hike = await Navigator.push(// dùng để di chuyển giưã các màn
+                  HikeDetail hike = await Navigator.push(
+                    // dùng để di chuyển giưã các màn
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CreateHikeScreen()), //di chuyển sang Create Hike
+                        builder: (context) =>
+                            const CreateHikeScreen()), //di chuyển sang Create Hike
                   );
                   listHike.add(hike); //add HIke vừa tạo vào list hike
                   totalDistance += hike.length; //cộng thêm length vào hike

@@ -1,3 +1,4 @@
+import 'package:hiker/main.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -20,16 +21,17 @@ class DatabaseService {
 
   Future<Database> initialize() async {
     final path = await fullPath;
-    var database = openDatabase(
+    var db = openDatabase(
       path,
       version: 1,
       onCreate: create,
       singleInstance: true,
     );
-    return database;
+    return db;
   }
 
-  Future<void> create(Database database, int version) async => await HikeDB().createTable(database);
+  Future<void> create(Database database, int version) async =>
+      await HikeDB().createTable(database);
 }
 
 class HikeDB {
@@ -48,5 +50,31 @@ class HikeDB {
     "description" TEXT,
     PRIMARY KEY("id" AUTOINCREMENT
     )''');
+  }
+
+  Future<int> create({
+    required String hikeName,
+    required String country,
+    required String city,
+    required DateTime date,
+    required String hour,
+    required String minute,
+    required double length,
+    required double difficulty,
+    required String parking,
+    required String description,
+  }) async {
+    final db = await DatabaseService().database;
+    return await db.rawInsert(
+        '''INSERT INTO hikes (hikeName,country,city,date,hour,minute,length,difficulty,parking,description) VALUE (?,?,?,?,?,?,?,?,?,?,)''',
+        [hikeName,country,city,date.millisecondsSinceEpoch,hour,minute,length,difficulty,parking,description]);
+  }
+
+  Future<List<HikeDetail>> getListHike() async {
+    final db = await DatabaseService().database;
+    final hikes = await db.rawQuery(
+      'SELECT * from hikes'
+    );
+    return hikes.map((hike) => HikeDetail.fromSql(hike)).toList();
   }
 }
