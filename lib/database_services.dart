@@ -21,7 +21,7 @@ class DatabaseService {
 
   Future<Database> initialize() async {
     final path = await fullPath;
-    var db = openDatabase(
+    Database db = await openDatabase(
       path,
       version: 1,
       onCreate: create,
@@ -49,10 +49,10 @@ class HikeDB {
     "parking" TEXT,
     "description" TEXT,
     PRIMARY KEY("id" AUTOINCREMENT
-    )''');
+    ))''');
   }
 
-  Future<int> create({
+  Future<int> createHike({
     required String hikeName,
     required String country,
     required String city,
@@ -66,15 +66,57 @@ class HikeDB {
   }) async {
     final db = await DatabaseService().database;
     return await db.rawInsert(
-        '''INSERT INTO hikes (hikeName,country,city,date,hour,minute,length,difficulty,parking,description) VALUE (?,?,?,?,?,?,?,?,?,?,)''',
-        [hikeName,country,city,date.millisecondsSinceEpoch,hour,minute,length,difficulty,parking,description]);
+        '''INSERT INTO hikes (hikeName,country,city,date,hour,minute,length,difficulty,parking,description) VALUES (?,?,?,?,?,?,?,?,?,?)''',
+        [
+          hikeName,
+          country,
+          city,
+          date.millisecondsSinceEpoch,
+          hour,
+          minute,
+          length,
+          difficulty,
+          parking,
+          description
+        ]);
   }
 
   Future<List<HikeDetail>> getListHike() async {
     final db = await DatabaseService().database;
-    final hikes = await db.rawQuery(
-      'SELECT * from hikes'
-    );
+    final hikes = await db.rawQuery('SELECT * from hikes');
     return hikes.map((hike) => HikeDetail.fromSql(hike)).toList();
+  }
+
+  Future<HikeDetail> getHikeById(int id) async {
+    final db = await DatabaseService().database;
+    final hike = await db.rawQuery('SELECT * from hikes WHERE id = ?', [id]);
+    return HikeDetail.fromSql(hike.first);
+  }
+
+  Future<int> update(HikeDetail hike) async {
+    final db = await DatabaseService().database;
+    return await db.update(
+      'hikes',
+      {
+        "hikeName": hike.hikeName,
+        "country": hike.country,
+        "city": hike.city,
+        "date": hike.date.millisecondsSinceEpoch,
+        "hour": hike.hour,
+        "minute": hike.minute,
+        "length": hike.length,
+        "difficulty": hike.difficulty,
+        "parking": hike.parking,
+        "description": hike.description,
+      },
+      where: 'id = ?',
+      // conflictAlgorithm: ConflictAlgorithm.rollback,
+      whereArgs: [hike.id],
+    );
+  }
+
+  Future<void> delete(int id) async {
+    final db = await DatabaseService().database;
+    await db.rawDelete('DELETE FROM hikes WHERE id = ?', [id]);
   }
 }

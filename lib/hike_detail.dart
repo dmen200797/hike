@@ -238,7 +238,7 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            currentHike.isDelete = true;
+                            // currentHike.isDelete = true;
                             Navigator.pop(context, currentHike);
                           },
                           child: const Text('Delete'),

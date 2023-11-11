@@ -517,6 +517,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                             showMyDialog('Length must be a positive number');
                           } else {
                             HikeDetail hike = HikeDetail(
+                              id: 1,
                               hikeName: nameHikeController.text,
                               country: countryValue,
                               city: cityValue,
@@ -527,7 +528,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                               difficulty: difficulty,
                               parking: currentOption,
                               description: descriptionController.text,
-                              isDelete: false,
+                              // isDelete: false,
                             );
                             Navigator.pop(context,hike);
                           }

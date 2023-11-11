@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hiker/main.dart';
 
+import 'database_services.dart';
+
 class CreateHikeScreen extends StatefulWidget {
   const CreateHikeScreen({super.key});
 
@@ -30,6 +32,7 @@ List<String> minutes = ['0', '15', '30', '45'];
 List parkingOption = ['Yes', 'No'];
 
 class _CreateHikeScreenState extends State<CreateHikeScreen> {
+  final hikeDB = HikeDB();
   String countryValue = listCountry.first;
   String cityValue = listCity.first;
   DateTime selectedDate = DateTime.now();
@@ -514,25 +517,19 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                             //check số âm
                             showMyDialog('Length must be a positive number');
                           } else {
-                            //nếu pass -> taoj Hike
-                            HikeDetail hike = HikeDetail(
+                            hikeDB.createHike(
                               hikeName: nameHikeController.text,
-                              //=> Tạo hike gồm các dữ liệu phía dưới
                               country: countryValue,
-                              //gắn dữ liệu vào country (class hike detail)
                               city: cityValue,
                               date: selectedDate,
                               hour: hour,
                               minute: minute,
-                              length:
-                                  double.tryParse(lengthController.text) ?? 0,
+                              length: double.parse(lengthController.text),
                               difficulty: difficulty,
                               parking: parkingOpt,
                               description: descriptionController.text,
-                              isDelete: false,
                             );
-                            Navigator.pop(context,
-                                hike); //sẽ back lại màn trước và truyền Hike về màn trước(màn main)
+                            Navigator.pop(context, true);
                           }
                         },
                         child: const Text('Save'),

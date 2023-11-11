@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hiker/database_services.dart';
 import 'package:hiker/hike_detail.dart';
 
 import 'create_hike.dart';
@@ -35,15 +36,15 @@ class HikeDetail {
   });
 
   factory HikeDetail.fromSql(Map<String, dynamic> map) => HikeDetail(
-        id: map['id'].toInt() ?? 0,
+        id: map['id'].toInt(),
         hikeName: map['hikeName'] ?? '',
         country: map['country'] ?? '',
         city: map['city'] ?? '',
-        date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+        date: DateTime.fromMillisecondsSinceEpoch(int.parse(map['date'])),
         hour: map['hour'] ?? '',
         minute: map['minute'] ?? '',
-        length: double.parse(map['length']),
-        difficulty: double.parse(map['difficulty']),
+        length: map['length'].toDouble(),
+        difficulty: map['difficulty'].toDouble(),
         parking: map['parking'] ?? '',
         description: map['description'] ?? '',
       );
@@ -68,8 +69,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<HikeDetail> listHike = [];
+  Future<List<HikeDetail>>? listHike;
+  final hikeDB = HikeDB();
   double totalDistance = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    getHikeList();
+  }
+
+  void getHikeList() {
+    setState(() {
+      listHike = hikeDB.getListHike().then((hikes) {
+        //Tính lại totalDistance
+        totalDistance = 0;
+        for (var hike in hikes) {
+          totalDistance += hike.length;
+        }
+        setState(() {});
+        return hikes;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -176,58 +198,62 @@ class _MyHomePageState extends State<MyHomePage> {
             Container(
               padding: const EdgeInsets.fromLTRB(10, 0, 10, 30),
               height: 500,
-              child: ListView.builder(
-                itemCount: listHike.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () async {
-                      HikeDetail hike = await Navigator.push(
-                        // Tạo 1 obj hike để hứng data từ màn HikeDetail trả về
-                        context,
-                        MaterialPageRoute(
-                          //Navigate sang màn hike detail
-                          builder: (context) => HikeDetailScreen(
-                            hike: listHike[index],
-                          ),
-                        ),
-                      );
-
-                      //sau khi có đc data từ màn HikeDetail trả về, check xem hike đó có bị delete hay ko
-                      if (hike.isDelete) {
-                        listHike.removeAt(index);
-                      } else {
-                        //nếu ko bị delete thì update lại hike đó theo data mới
-                        listHike[index] = hike;
-                      }
-
-                      //Tính lại totalDistance
-                      totalDistance = 0;
-                      for (hike in listHike) {
-                        totalDistance += hike.length;
-                      }
-                      setState(() {});
-                    },
-                    child: BoxItem(
-                      //hiển ra thông số vừa tạo bao gồm data list
-                      hikeDetail: listHike[index],
-                    ),
-                  );
+              child: FutureBuilder(
+                future: listHike,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.data != null) {
+                    final hikes = snapshot.data!;
+                    return hikes.isEmpty
+                        ? Container()
+                        : ListView.builder(
+                            itemCount: hikes.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      //Navigate sang màn hike detail
+                                      builder: (context) => HikeDetailScreen(
+                                        hike: hikes[index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: BoxItem(
+                                  hikeDetail: hikes[index],
+                                ),
+                              );
+                            });
+                  } else {
+                    return Container();
+                  }
                 },
               ),
             ),
             Center(
               child: IconButton(
                 onPressed: () async {
-                  HikeDetail hike = await Navigator.push(
+                  bool reload = await Navigator.push(
                     // dùng để di chuyển giưã các màn
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             const CreateHikeScreen()), //di chuyển sang Create Hike
                   );
-                  listHike.add(hike); //add HIke vừa tạo vào list hike
-                  totalDistance += hike.length; //cộng thêm length vào hike
-                  setState(() {});
+                  if(reload) {
+                    listHike = hikeDB.getListHike().then((hikes) {
+                      //Tính lại totalDistance
+                      totalDistance = 0;
+                      for (var hike in hikes) {
+                        totalDistance += hike.length;
+                      }
+                      setState(() {});
+                      return hikes;
+                    });
+                  }
                 },
                 icon: const Icon(
                   Icons.add_circle_outlined,
