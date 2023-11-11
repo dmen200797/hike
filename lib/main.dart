@@ -211,8 +211,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             itemCount: hikes.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
-                                onTap: () {
-                                  Navigator.push(
+                                onTap: () async {
+                                  bool reload = await Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       //Navigate sang màn hike detail
@@ -221,6 +221,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                   );
+                                  if(reload) {
+                                    listHike = hikeDB.getListHike().then((hikes) {
+                                      //Tính lại totalDistance
+                                      totalDistance = 0;
+                                      for (var hike in hikes) {
+                                        totalDistance += hike.length;
+                                      }
+                                      setState(() {});
+                                      return hikes;
+                                    });
+                                  }
                                 },
                                 child: BoxItem(
                                   hikeDetail: hikes[index],

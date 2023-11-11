@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hiker/main.dart';
 
+import 'database_services.dart';
 import 'edit_hike.dart';
 
 class HikeDetailScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class HikeDetailScreen extends StatefulWidget {
 }
 
 class _HikeDetailScreenState extends State<HikeDetailScreen> {
+  final hikeDB = HikeDB();
   late HikeDetail currentHike;
   String countryValue = '';
   String cityValue = '';
@@ -224,7 +226,7 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
                   Container(
                     width: 500,
                     height: 150,
-                    padding: EdgeInsets.all(5),
+                    padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(border: Border.all()),
                     child: Text(
                       description,
@@ -238,8 +240,8 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            // currentHike.isDelete = true;
-                            Navigator.pop(context, currentHike);
+                            hikeDB.delete(widget.hike.id);
+                            Navigator.pop(context, true);
                           },
                           child: const Text('Delete'),
                         ),
