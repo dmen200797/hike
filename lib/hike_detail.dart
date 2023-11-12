@@ -65,7 +65,7 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
       },
       child: WillPopScope(
         onWillPop: () async {
-          Navigator.pop(context, currentHike);
+          Navigator.pop(context, true);
           return true;
         },
         child: Scaffold(
@@ -80,7 +80,7 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
                       SizedBox(
                         child: IconButton(
                           onPressed: () {
-                            Navigator.pop(context, currentHike);
+                            Navigator.pop(context, true);
                           },
                           icon: const Icon(Icons.arrow_back_ios_new_rounded),
                         ),
@@ -259,7 +259,6 @@ class _HikeDetailScreenState extends State<HikeDetailScreen> {
                             currentHike = hike;
                             updateData();
                             setState(() {});
-                            // Navigator.pop(context,currentHike);
                           },
                           child: const Text('Edit'),
                         ),

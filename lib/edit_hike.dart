@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hiker/main.dart';
 
+import 'database_services.dart';
+
 class EditHikeScreen extends StatefulWidget {
   const EditHikeScreen({super.key, required this.hike});
+
   final HikeDetail hike;
 
   @override
@@ -31,6 +34,7 @@ List<String> minutes = ['0', '15', '30', '45'];
 List parkingOption = ['Yes', 'No'];
 
 class _EditHikeScreenState extends State<EditHikeScreen> {
+  final hikeDB = HikeDB();
   String countryValue = '';
   String cityValue = '';
   String hour = '';
@@ -52,8 +56,10 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
     currentOption = widget.hike.parking;
     selectedDate = widget.hike.date;
     nameHikeController = TextEditingController(text: widget.hike.hikeName);
-    lengthController = TextEditingController(text: widget.hike.length.toString());
-    descriptionController = TextEditingController(text: widget.hike.description);
+    lengthController =
+        TextEditingController(text: widget.hike.length.toString());
+    descriptionController =
+        TextEditingController(text: widget.hike.description);
     super.initState();
   }
 
@@ -71,30 +77,28 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
     }
   }
 
+  Future<void> showMyDialog(String text) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: Text(text),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    Future<void> showMyDialog(String text) async {
-      return showDialog<void>(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Alert'),
-            content: Text(text),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
@@ -159,13 +163,12 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        
                         setState(() {
                           countryValue = value!;
                         });
                       },
                       items: listCountry.map<DropdownMenuItem<String>>(
-                            (String value) {
+                        (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -198,13 +201,12 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        
                         setState(() {
                           cityValue = value!;
                         });
                       },
                       items: listCity.map<DropdownMenuItem<String>>(
-                            (String value) {
+                        (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -272,13 +274,12 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        
                         setState(() {
                           hour = value!;
                         });
                       },
                       items: hours.map<DropdownMenuItem<String>>(
-                            (String value) {
+                        (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -303,13 +304,12 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        
                         setState(() {
                           minute = value!;
                         });
                       },
                       items: minutes.map<DropdownMenuItem<String>>(
-                            (String value) {
+                        (String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value),
@@ -493,7 +493,7 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 100, vertical: 20),
                   child: Row(
                     children: [
                       ElevatedButton(
@@ -505,32 +505,36 @@ class _EditHikeScreenState extends State<EditHikeScreen> {
                       const Spacer(),
                       ElevatedButton(
                         onPressed: () {
-                          if(nameHikeController.text.isEmpty) {
+                          if (nameHikeController.text.isEmpty) {
                             showMyDialog('Name of Hike is missing');
-                          } else if(hour.isEmpty && minute.isEmpty) {
+                          } else if (hour.isEmpty && minute.isEmpty) {
                             showMyDialog('Hiking time is missing');
-                          } else if(lengthController.text.isEmpty) {
+                          } else if (lengthController.text.isEmpty) {
                             showMyDialog('Length is missing');
-                          } else if(double.tryParse(lengthController.text) == null) {
+                          } else if (double.tryParse(lengthController.text) ==
+                              null) {
                             showMyDialog('Length must be a positive number');
-                          } else if(double.tryParse(lengthController.text)! < 0) {
+                          } else if (double.tryParse(lengthController.text)! <
+                              0) {
                             showMyDialog('Length must be a positive number');
                           } else {
                             HikeDetail hike = HikeDetail(
-                              id: 1,
+                              id: widget.hike.id,
                               hikeName: nameHikeController.text,
                               country: countryValue,
                               city: cityValue,
                               date: selectedDate,
                               hour: hour,
                               minute: minute,
-                              length: double.tryParse(lengthController.text) ?? 0,
+                              length:
+                                  double.tryParse(lengthController.text) ?? 0,
                               difficulty: difficulty,
                               parking: currentOption,
                               description: descriptionController.text,
                               // isDelete: false,
                             );
-                            Navigator.pop(context,hike);
+                            hikeDB.update(hike);
+                            Navigator.pop(context, hike);
                           }
                         },
                         child: const Text('Save'),

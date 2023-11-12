@@ -61,29 +61,29 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
   final lengthController = TextEditingController();
   final descriptionController = TextEditingController();
 
+  Future<void> showMyDialog(String text) async {
+    return showDialog<void>(
+      //show ra pop-up Dialog cảnh báo
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Alert'),
+          content: Text(text),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<void> showMyDialog(String text) async {
-      return showDialog<void>(
-        //show ra pop-up Dialog cảnh báo
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Alert'),
-            content: Text(text),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Ok'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());

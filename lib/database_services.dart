@@ -110,7 +110,6 @@ class HikeDB {
         "description": hike.description,
       },
       where: 'id = ?',
-      // conflictAlgorithm: ConflictAlgorithm.rollback,
       whereArgs: [hike.id],
     );
   }

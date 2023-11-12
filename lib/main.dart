@@ -221,8 +221,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       ),
                                     ),
                                   );
-                                  if(reload) {
-                                    listHike = hikeDB.getListHike().then((hikes) {
+                                  if (reload) {
+                                    listHike =
+                                        hikeDB.getListHike().then((hikes) {
                                       //Tính lại totalDistance
                                       totalDistance = 0;
                                       for (var hike in hikes) {
@@ -254,7 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         builder: (context) =>
                             const CreateHikeScreen()), //di chuyển sang Create Hike
                   );
-                  if(reload) {
+                  if (reload) {
                     listHike = hikeDB.getListHike().then((hikes) {
                       //Tính lại totalDistance
                       totalDistance = 0;
