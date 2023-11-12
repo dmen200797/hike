@@ -87,12 +87,6 @@ class HikeDB {
     return hikes.map((hike) => HikeDetail.fromSql(hike)).toList();
   }
 
-  Future<HikeDetail> getHikeById(int id) async {
-    final db = await DatabaseService().database;
-    final hike = await db.rawQuery('SELECT * from hikes WHERE id = ?', [id]);
-    return HikeDetail.fromSql(hike.first);
-  }
-
   Future<int> update(HikeDetail hike) async {
     final db = await DatabaseService().database;
     return await db.update(
