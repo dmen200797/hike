@@ -36,6 +36,7 @@ class HikeDetail {
   });
 
   factory HikeDetail.fromSql(Map<String, dynamic> map) => HikeDetail(
+        //map lại data từ key:value về kiểu object HikeDetail
         id: map['id'].toInt(),
         hikeName: map['hikeName'] ?? '',
         country: map['country'] ?? '',
@@ -70,24 +71,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Future<List<HikeDetail>>? listHike;
-  final hikeDB = HikeDB();
+  final hikeDB = HikeDB(); //Khởi tạo DB
   double totalDistance = 0;
 
   @override
   void initState() {
     super.initState();
-    getHikeList();
+    getHikeList(); //Chạy hàm getHikeList để lấy list Hike ngay khi màn list đc khởi tạo
   }
 
   void getHikeList() {
     setState(() {
-      listHike = hikeDB.getListHike().then((hikes) {
-        //Tính lại totalDistance
+      listHike = hikeDB.getListHike().then((hikes) {//lấy data list Hike từ DB rồi tính lại totalDistance
         totalDistance = 0;
         for (var hike in hikes) {
+          //Dùng ham for cộng length của từng Hike để tính totalDistance
           totalDistance += hike.length;
         }
-        setState(() {});
+        setState(() {}); //gọi hàm setState để build lại UI
         return hikes;
       });
     });
@@ -111,10 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(width: 3),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(20),
-                    ),
+                    border: Border.all(width: 3), //Tạo viền bên ngoài container
+                    borderRadius: const BorderRadius.all(Radius.circular(20)), //bo tròn các góc
                   ),
                   margin: const EdgeInsets.all(10),
                   child: const Row(
@@ -128,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: 250,
                         child: TextField(
                           decoration: InputDecoration(
-                            border: InputBorder.none,
+                            border: InputBorder.none,//loại bỏ viền bên ngoài textfield
                           ),
                         ),
                       ),
@@ -174,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                  Positioned(
+                  Positioned(//Sử dụng widget Positioned và Stack để đưa text October lên góc trái của Container Total distance
                     top: -10,
                     left: 30,
                     child: Container(
@@ -201,18 +200,18 @@ class _MyHomePageState extends State<MyHomePage> {
               child: FutureBuilder(
                 future: listHike,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {//Check nếu state của snapshot là waiting thì hiển thị loading
                     return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.data != null) {
+                  } else if (snapshot.data != null) {//check xem  snapshot có trả về data hay ko
                     final hikes = snapshot.data!;
-                    return hikes.isEmpty
+                    return hikes.isEmpty //Nếu hikes rỗng thì build 1 Container rỗng, nếu có data thì build list Hike
                         ? Container()
                         : ListView.builder(
-                            itemCount: hikes.length,
+                            itemCount: hikes.length,//Tổng item đc build = lượng phần tử trong list hikes
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () async {
-                                  bool reload = await Navigator.push(
+                                  bool reload = await Navigator.push(//biến reload hứng giá trị được trả về từ màn HikeDetailScreen
                                     context,
                                     MaterialPageRoute(
                                       //Navigate sang màn hike detail
@@ -223,18 +222,17 @@ class _MyHomePageState extends State<MyHomePage> {
                                   );
                                   if (reload) {
                                     listHike =
-                                        hikeDB.getListHike().then((hikes) {
-                                      //Tính lại totalDistance
+                                        hikeDB.getListHike().then((hikes) {//lấy data list Hike từ DB rồi tính lại totalDistance
                                       totalDistance = 0;
-                                      for (var hike in hikes) {
+                                      for (var hike in hikes) { //Dùng ham for cộng length của từng Hike để tính totalDistance
                                         totalDistance += hike.length;
                                       }
-                                      setState(() {});
+                                      setState(() {}); //gọi hàm setState để build lại UI
                                       return hikes;
                                     });
                                   }
                                 },
-                                child: BoxItem(
+                                child: BoxItem(//build ra từng phần tử BoxItem
                                   hikeDetail: hikes[index],
                                 ),
                               );
@@ -248,21 +246,19 @@ class _MyHomePageState extends State<MyHomePage> {
             Center(
               child: IconButton(
                 onPressed: () async {
-                  bool reload = await Navigator.push(
-                    // dùng để di chuyển giưã các màn
+                  bool reload = await Navigator.push( //biến reload hứng giá trị được trả về từ màn HikeDetailScreen
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
                             const CreateHikeScreen()), //di chuyển sang Create Hike
                   );
                   if (reload) {
-                    listHike = hikeDB.getListHike().then((hikes) {
-                      //Tính lại totalDistance
+                    listHike = hikeDB.getListHike().then((hikes) {//lấy data list Hike từ DB rồi tính lại totalDistance
                       totalDistance = 0;
-                      for (var hike in hikes) {
+                      for (var hike in hikes) { //Dùng ham for cộng length của từng Hike để tính totalDistance
                         totalDistance += hike.length;
                       }
-                      setState(() {});
+                      setState(() {}); //gọi hàm setState để build lại UI
                       return hikes;
                     });
                   }
@@ -290,8 +286,8 @@ class BoxItem extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1.5),
-        borderRadius: const BorderRadius.all(
+        border: Border.all(color: Colors.black, width: 1.5),//tạo viền màu đen quanh Container BoxItem
+        borderRadius: const BorderRadius.all(//bo tròn các góc
           Radius.circular(20),
         ),
       ),
