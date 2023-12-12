@@ -89,7 +89,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
         FocusScope.of(context).requestFocus(FocusNode()); //bỏ focus ra khỏi textfield để tắt keyboard
       },
       child: Scaffold(
-        body: SingleChildScrollView(
+        body: SingleChildScrollView(//bọc scollview cho toàn màn hình
           child: Padding(
             padding: const EdgeInsets.fromLTRB(10, 40, 10, 10),
             child: Column(
@@ -107,13 +107,13 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       ),
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20),//Bo tròn HikeName textfield
                           borderSide: const BorderSide(
                             width: 0,
-                            style: BorderStyle.none,
+                            style: BorderStyle.none,//Ẩn border khi focus vào textfield
                           ),
                         ),
-                        fillColor: Colors.black,
+                        fillColor: Colors.black,//đổi màu ô textfield thành màu đen
                         filled: true,
                         hintText: 'Name of hike',
                         hintStyle: const TextStyle(color: Colors.white),
@@ -137,8 +137,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                     const SizedBox(width: 10),
                     DropdownButton(
-                      value: countryValue,
-                      // icon: const Icon(Icons.arrow_downward),
+                      value: countryValue, //set giá trị mặc định cho dropdown
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -149,8 +148,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
                         setState(() {
+                          //set lại countryValue = với giá trị đc chọn trong dropdown
                           countryValue = value!;
                         });
                       },
@@ -177,8 +176,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                     const SizedBox(width: 10),
                     DropdownButton(
-                      value: cityValue,
-                      // icon: const Icon(Icons.arrow_downward),
+                      value: cityValue, //set giá trị mặc định cho dropdown
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -189,8 +187,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
                         setState(() {
+                          //set lại cityValue = với giá trị đc chọn trong dropdown
                           cityValue = value!;
                         });
                       },
@@ -221,14 +219,14 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                     const SizedBox(width: 30),
                     Text(
-                      '${selectedDate.toLocal()}'.split(' ')[0],
+                      '${selectedDate.toLocal()}'.split(' ')[0],//Tách chuỗi và lấy phần tử đầu để chỉ hiển thị ngày
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 20),
                     IconButton(
                       onPressed: () {
-                        _selectDate(context);
+                        _selectDate(context); //gọi hàm _selectDate để hiển thị DatePicker
                       },
                       icon: const Icon(
                         Icons.calendar_month,
@@ -252,8 +250,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                     const Spacer(),
                     DropdownButton(
-                      value: hour,
-                      // icon: const Icon(Icons.arrow_downward),
+                      value: hour, //set giá trị mặc định cho dropdown
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -264,8 +261,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
                         setState(() {
+                          //set lại hour = với giá trị đc chọn trong dropdown
                           hour = value!;
                         });
                       },
@@ -284,8 +281,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     ),
                     const Spacer(),
                     DropdownButton(
-                      value: minute,
-                      // icon: const Icon(Icons.arrow_downward),
+                      value: minute, //set giá trị mặc định cho dropdown
                       elevation: 16,
                       style: const TextStyle(
                         color: Colors.lightBlue,
@@ -296,8 +292,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         color: Colors.lightBlue,
                       ),
                       onChanged: (String? value) {
-                        // This is called when the user selects an item.
                         setState(() {
+                          //set lại minute = với giá trị đc chọn trong dropdown
                           minute = value!;
                         });
                       },
