@@ -246,7 +246,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Center(
               child: IconButton(
                 onPressed: () async {
-                  bool reload = await Navigator.push( //biến reload hứng giá trị được trả về từ màn HikeDetailScreen
+                  bool reload = await Navigator.push( //biến reload hứng giá trị được trả về từ màn CreateHikeScreen
                     context,
                     MaterialPageRoute(
                         builder: (context) =>

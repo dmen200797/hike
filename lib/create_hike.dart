@@ -331,8 +331,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                       height: 30,
                       child: TextField(
                         keyboardType: TextInputType.number,
-                        controller: lengthController,
-                        //gắn controllẻr vào textfield
+                        controller: lengthController, //gắn controller vào textfield
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -360,8 +359,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         color: Colors.red,
                       ),
                     ),
-                    RatingBar.builder(
-                      initialRating: difficulty,
+                    RatingBar.builder( //build ra Rating bar
+                      initialRating: difficulty, //set giá trị mặc định cho Rating bar
                       minRating: 1,
                       itemCount: 5,
                       itemSize: 30,
@@ -371,6 +370,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                         color: Colors.amber,
                       ),
                       onRatingUpdate: (rating) {
+                        //set lại difficulty = với giá trị đc chọn trong rating bar
                         difficulty = rating;
                       },
                     )
@@ -435,8 +435,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                 SizedBox(
                   height: 150,
                   child: TextField(
-                    controller: descriptionController,
-                    //gắn controllẻr vào textfield
+                    controller: descriptionController, //gắn controller vào textfield
                     maxLines: null,
                     expands: true,
                     cursorColor: Colors.black,
