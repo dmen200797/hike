@@ -58,8 +58,8 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
 
   final nameHikeController =
       TextEditingController(); //controller của textfield -> lấy ra giá trị user đax nhập vào textfield
-  final lengthController = TextEditingController();
-  final descriptionController = TextEditingController();
+  final lengthController = TextEditingController(); //controller của textfield -> lấy ra giá trị user đax nhập vào textfield
+  final descriptionController = TextEditingController(); //controller của textfield -> lấy ra giá trị user đax nhập vào textfield
 
   Future<void> showMyDialog(String text) async {
     return showDialog<void>(
@@ -86,7 +86,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode()); //bỏ focus ra khỏi textfield để tắt keyboard
       },
       child: Scaffold(
         body: SingleChildScrollView(
@@ -100,7 +100,7 @@ class _CreateHikeScreenState extends State<CreateHikeScreen> {
                     width: 300,
                     child: TextField(
                       controller: nameHikeController,
-                      //gắn controllẻr vào textfield
+                      //gắn controller vào textfield
                       cursorColor: Colors.white,
                       style: const TextStyle(
                         color: Colors.white,

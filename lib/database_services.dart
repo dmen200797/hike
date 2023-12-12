@@ -16,12 +16,12 @@ class DatabaseService {
   Future<String> get fullPath async {
     const name = 'hike.db';
     final path = await getDatabasesPath();
-    return join(path, name);
+    return join(path, name); //trả về path lưu DB
   }
 
   Future<Database> initialize() async {
-    final path = await fullPath;
-    Database db = await openDatabase(
+    final path = await fullPath; //lấy path lưu DB
+    Database db = await openDatabase( //Tạo DB
       path,
       version: 1,
       onCreate: create,
@@ -30,12 +30,12 @@ class DatabaseService {
     return db;
   }
 
-  Future<void> create(Database database, int version) async =>
+  Future<void> create(Database database, int version) async => //tạo table trong DB
       await HikeDB().createTable(database);
 }
 
 class HikeDB {
-  Future<void> createTable(Database database) async {
+  Future<void> createTable(Database database) async {//Tạo table trong DB
     await database.execute('''CREATE TABLE IF NOT EXISTS hikes (
     "id" INTEGER NOT NULL,
     "hikeName" TEXT,
