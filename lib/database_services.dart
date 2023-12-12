@@ -6,10 +6,10 @@ class DatabaseService {
   Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) {
+    if (_database != null) {//check nếu DB khác null thì return DB luôn
       return _database!;
     }
-    _database = await initialize();
+    _database = await initialize();//Khởi tạo DB
     return _database!;
   }
 
